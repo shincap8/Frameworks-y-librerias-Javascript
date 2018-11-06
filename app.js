@@ -39,42 +39,37 @@ function tableroInicio() {
 
 function derecha() {
     var cantidad = 7;
-    var posicionX = new Array();
-    var posicionY = new Array();
-    var posicion = new Array();
+    var grid = [];
     for (var i = 0; i < cantidad; i++) {
+        grid[i]=[];
         for (var j = 1; j < cantidad; j++) {
             var objeto = $('.col-' + j + ' .elemento');
-            if ((j + 2)<=7 && (objeto[i].src == $('.col-' + (j + 1) + ' .elemento')[i].src) && ((objeto[i].src == $('.col-' + (j + 2) + ' .elemento')[i].src))) {
-                parecidos = 0;
+            if ((j + 2) <= 7 && (objeto[i].src == $('.col-' + (j + 1) + ' .elemento')[i].src) && ((objeto[i].src == $('.col-' + (j + 2) + ' .elemento')[i].src))) {
                 for (var k = 0; k < cantidad; k++) {
-                    if ((j + (k + 1)) <= 7 && objeto[i].src == $('.col-' + (j + (k + 1)) + ' .elemento')[i].src ) {
-                        posicionX[i] = k;
-                        posicionY[k] = i;
-                        posicion[k] = (posicionX, posicionY);
-                        parecidos++;
-                    }
+                    if ((j + k) <= 7 && objeto[i].src == $('.col-' + (j + k) + ' .elemento')[i].src) {
+                        grid[i][j+k]= 1;
+                    } else break
                 }
-            }
-        }
-    }
-    return posicion;
+            } 
+        }      
+    } console.log(grid);
 }
 
 function abajo() {
     var cantidad = 7;
-    for (var i = 0; i < cantidad; i++) {
-        for (var j = 1; j < cantidad; j++) {
+    var grid = [];
+    for (var j = 1; j < cantidad; j++) {
+        grid[j] = [];
+        for (var i = 0; i < cantidad; i++) {
             var objeto = $('.col-' + j + ' .elemento');
-            if ((i + 2)<=7 && (objeto[i].src == objeto[i + 1].src) && (objeto[i].src == objeto[i + 2].src)){
-                parecidos = 0;
-                for (var k = 1; k < cantidad; k++) {
-                    if ((i + k) <= 7 && objeto[i].src == objeto[i + k].src) {
-                        parecidos++;
-                    }
+            if ((i + 2) < 7 && (objeto[i].src == objeto[i + 1].src) && (objeto[i].src == objeto[i + 2].src)) {
+                for (var k = 0; k < cantidad; k++) {
+                    if ((i + k) < 7 && objeto[i].src == objeto[i+k].src) {
+                        grid[j][i + k] = 1;
+                    }else break
                 }
-                return parecidos;
             }
         }
-    }
+    }console.log(grid);
 }
+//--------------------------------------------------------------------------------------------------------------------------
