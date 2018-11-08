@@ -1,8 +1,19 @@
 $(function () {
     tituloamarillo()
     tableroInicio()
+    
+    $('.btn-reinicio').on("click",function () {
+        click += 1;
+        if (click == 1) {
+            $(this).text("Reiniciar");
+        }
+        if (click == 2) {
+            $(this).text("Iniciar");
+            click = 0
+        }
+    })
 })
-
+var click = 0
 //Función de Animacion del Titulo Principal
 function tituloblanco() {
     $('.main-titulo').animate({
@@ -34,7 +45,9 @@ function tableroInicio() {
     }
 }
 //-------------------------------------------
+//Función para el botón reiniciar
 
+//-------------------------------------------
 //Funciones para comparar columnas y filas
 function derecha() {
     var cantidad = 7;
@@ -120,5 +133,27 @@ function puntaje() {
     puntos = puntos + ($('.eliminar').length * 15)
     $('#score-text').text(puntos)
 }
+//Función para cuando se cumpla el tiempo
+function gameOver() {
+    $('.panel-tablero').animate({
+        height: "toggle",
+        width: "toggle",
+        opacity: 0.2
+    }, 895,"linear")
+    $('.panel-score').animate({
+        width: "+=75%",
+    }, 1013, function () {
+        letrerofin()
+    })
+    $('.time').animate({
+        height: "toggle",
+        width: "toggle",
+        opacity: 0.2
+    }, 895, "linear")
 
 
+}
+
+function letrerofin() {
+    $('.score').before('<h2 class="titulo-over" style="text-align:center">Juego Terminado</h2>')
+}
