@@ -1,23 +1,23 @@
 $(function () {
-    tituloamarillo()
-    tableroInicio()
+    tituloamarillo();
+    tableroInicio();
 
     $('.btn-reinicio').on("click", function () {
         clicks += 1;
         if (clicks == 1) {
             $(this).text("Reiniciar");
-            countdown()
-            abajo()
-            derecha()
-            titilar()
+            countdown();
+            abajo();
+            derecha();
+            titilar();
         }
         if (clicks == 2) {
             $(this).text("Iniciar");
-            clicks = 0
-            reset()
-            puntos = 0
-            restart()
-            tableroInicio()
+            clicks = 0;
+            reset();
+            puntos = 0;
+            restart();
+            tableroInicio();
         }
     })
 })
@@ -26,32 +26,75 @@ $(function () {
 function arrastrar() {
     $('.elemento').draggable({
         start: function () {
-            var posicion = $(this).position()
-            var x = 
-            $(this).next().addClass('drop')
-            $(this).prev().addClass('drop')
+            $(this).next().droppable({
+                accept: ".elemento",
+                drop: function (event, ui) {
+                    var imagen2 = $(this).attr("src");
+                    var imagen1 = $(ui.draggable).attr("src");
+                    console.log(imagen1);
+                    console.log(imagen2);
+                }
+            })
+            $(this).prev().droppable({
+                accept: ".elemento",
+                drop: function (event, ui) {
+                    var imagen2 = $(this).attr("src");
+                    var imagen1 = $(ui.draggable).attr("src");
+                    console.log(imagen1);
+                    console.log(imagen2);
+                }
+            })
             var fila = $(this).index()
-            var columna = $(this).parent().attr('class')
-            columna = columna.split("-")[1]
-            columna = parseInt(columna)
+            var columna = $(this).parent().attr('class');
+            columna = columna.split("-")[1];
+            columna = parseInt(columna);
             if (columna == 1) {
-                $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+                var derecha = $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').attr('id');
+                $("#" + derecha).droppable({
+                    accept: ".elemento",
+                    drop: function (event, ui) {
+                        var imagen2 = $(this).attr("src");
+                        var imagen1 = $(ui.draggable).attr("src");
+                        console.log(imagen1);
+                        console.log(imagen2);
+                    }
+                })
             } else if (columna > 1 && columna < 7) {
-                $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').addClass('drop')
-                $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+                var derecha = $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').attr('id');
+                $("#" + derecha).droppable({
+                    accept: ".elemento",
+                    drop: function (event, ui) {
+                        var imagen2 = $(this).attr("src");
+                        var imagen1 = $(ui.draggable).attr("src");
+                        console.log(imagen1);
+                        console.log(imagen2);
+                    }
+                });
+                var izquierda = $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').attr('id');
+                $("#" + izquierda).droppable({
+                    accept: ".elemento",
+                    drop: function (event, ui) {
+                        var imagen2 = $(this).attr("src");
+                        var imagen1 = $(ui.draggable).attr("src");
+                        console.log(imagen1);
+                        console.log(imagen2);
+                    }
+                });;
             } if (columna == 7) {
-                $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+                var izquierda = $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').attr('id');
+                $("#" + izquierda).droppable({
+                    accept: ".elemento",
+                    drop: function (event, ui) {
+                        var imagen2 = $(this).attr("src");
+                        var imagen1 = $(ui.draggable).attr("src");
+                        console.log(imagen1);
+                        console.log(imagen2);
+                    }
+                });;
             }
         },
-        containment: $('.panel-tablero'), cursor: "crosshair"
-    })
-
-    $('.drop').droppable({
-        accept: ".elemento",
-        drop: function () {
-            
-        }
-    })
+        containment: $('.panel-tablero'), cursor: "crosshair", revert: true
+    });
 }
 //-------------------------------------------------
 var clicks = 0
