@@ -36,7 +36,7 @@ function arrastrar() {
                     $(ui.draggable).attr("src", '' + imagen2 + '')
                     movimientos++;
                     $('#movimientos-text').text(movimientos);
-                    setTimeout(drag, 1000)
+                    $(this).droppable('destroy')
                 }
             })
             $(this).prev().droppable({
@@ -48,7 +48,7 @@ function arrastrar() {
                     $(ui.draggable).attr("src", '' + imagen2 + '')
                     movimientos++;
                     $('#movimientos-text').text(movimientos);
-                    setTimeout(drag, 1000)
+                    $(this).droppable('destroy')
                 }
             })
             var fila = $(this).index()
@@ -66,7 +66,7 @@ function arrastrar() {
                         $(ui.draggable).attr("src", '' + imagen2 + '')
                         movimientos++;
                         $('#movimientos-text').text(movimientos);
-                        setTimeout(drag, 1000)
+                        $(this).droppable('destroy')
                     }
                 })
             } else if (columna > 1 && columna < 7) {
@@ -80,7 +80,7 @@ function arrastrar() {
                         $(ui.draggable).attr("src", '' + imagen2 + '')
                         movimientos++;
                         $('#movimientos-text').text(movimientos);
-                        setTimeout(drag, 1000)
+                        $(this).droppable('destroy')
                     }
                 });
                 var izquierda = $('.col-' + (columna - 1) + ' .elemento:eq(' + fila + ')').attr('id');
@@ -93,7 +93,7 @@ function arrastrar() {
                         $(ui.draggable).attr("src", '' + imagen2 + '')
                         movimientos++;
                         $('#movimientos-text').text(movimientos);
-                        setTimeout(drag, 1000)
+                        $(this).droppable('destroy')
                     }
                 });;
             } if (columna == 7) {
@@ -107,7 +107,7 @@ function arrastrar() {
                         $(ui.draggable).attr("src", '' + imagen2 + '')
                         movimientos++;
                         $('#movimientos-text').text(movimientos);
-                        setTimeout(drag, 1000)
+                        $(this).droppable('destroy')
                     }
                 });;
             }
@@ -117,6 +117,7 @@ function arrastrar() {
             derecha();
             abajo();
             titilar();
+            $('.elemento').draggable('destroy')
         }
     });
 }
@@ -132,15 +133,15 @@ var movimientos = 0
 function tituloblanco() {
     $('.main-titulo').animate({
         color: "#fff"
-    }, 1000, function () {
-        setTimeout(tituloamarillo, 2500);
+    }, 800, function () {
+        setTimeout(tituloamarillo, 1700);
     })
 };
 function tituloamarillo() {
     $('.main-titulo').animate({
         color: "#DCFF0E"
-    }, 1000, function () {
-        setTimeout(tituloblanco, 2500);
+    }, 800, function () {
+        setTimeout(tituloblanco, 1700);
     })
 };
 //------------------------------------------
@@ -220,7 +221,7 @@ function titilar() {
                 }
             )
         setTimeout(titilar, 2900);
-    } else arrastrar(); return false;
+    } else setTimeout(arrastrar,100); return false;
 }
 //-----------------------------------------------------------------------------------
 //Funcion para añadir despues de eliminar iguales
