@@ -16,6 +16,7 @@ $(function () {
             clicks = 0;
             reset();
             puntos = 0;
+            movimientos = 0;
             restart();
             tableroInicio();
         }
@@ -31,8 +32,11 @@ function arrastrar() {
                 drop: function (event, ui) {
                     var imagen2 = $(this).attr("src");
                     var imagen1 = $(ui.draggable).attr("src");
-                    console.log(imagen1);
-                    console.log(imagen2);
+                    $(this).attr("src", '' + imagen1 + '');
+                    $(ui.draggable).attr("src", '' + imagen2 + '')
+                    movimientos++;
+                    $('#movimientos-text').text(movimientos);
+                    setTimeout(drag, 1000)
                 }
             })
             $(this).prev().droppable({
@@ -40,8 +44,11 @@ function arrastrar() {
                 drop: function (event, ui) {
                     var imagen2 = $(this).attr("src");
                     var imagen1 = $(ui.draggable).attr("src");
-                    console.log(imagen1);
-                    console.log(imagen2);
+                    $(this).attr("src", '' + imagen1 + '');
+                    $(ui.draggable).attr("src", '' + imagen2 + '')
+                    movimientos++;
+                    $('#movimientos-text').text(movimientos);
+                    setTimeout(drag, 1000)
                 }
             })
             var fila = $(this).index()
@@ -49,55 +56,78 @@ function arrastrar() {
             columna = columna.split("-")[1];
             columna = parseInt(columna);
             if (columna == 1) {
-                var derecha = $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').attr('id');
+                var derecha = $('.col-' + (columna + 1) + ' .elemento:eq(' + fila + ')').attr('id');
                 $("#" + derecha).droppable({
                     accept: ".elemento",
                     drop: function (event, ui) {
                         var imagen2 = $(this).attr("src");
                         var imagen1 = $(ui.draggable).attr("src");
-                        console.log(imagen1);
-                        console.log(imagen2);
+                        $(this).attr("src", '' + imagen1 + '');
+                        $(ui.draggable).attr("src", '' + imagen2 + '')
+                        movimientos++;
+                        $('#movimientos-text').text(movimientos);
+                        setTimeout(drag, 1000)
                     }
                 })
             } else if (columna > 1 && columna < 7) {
-                var derecha = $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').attr('id');
+                var derecha = $('.col-' + (columna + 1) + ' .elemento:eq(' + fila + ')').attr('id');
                 $("#" + derecha).droppable({
                     accept: ".elemento",
                     drop: function (event, ui) {
                         var imagen2 = $(this).attr("src");
                         var imagen1 = $(ui.draggable).attr("src");
-                        console.log(imagen1);
-                        console.log(imagen2);
+                        $(this).attr("src", '' + imagen1 + '');
+                        $(ui.draggable).attr("src", '' + imagen2 + '')
+                        movimientos++;
+                        $('#movimientos-text').text(movimientos);
+                        setTimeout(drag, 1000)
                     }
                 });
-                var izquierda = $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').attr('id');
+                var izquierda = $('.col-' + (columna - 1) + ' .elemento:eq(' + fila + ')').attr('id');
                 $("#" + izquierda).droppable({
                     accept: ".elemento",
                     drop: function (event, ui) {
                         var imagen2 = $(this).attr("src");
                         var imagen1 = $(ui.draggable).attr("src");
-                        console.log(imagen1);
-                        console.log(imagen2);
+                        $(this).attr("src", '' + imagen1 + '');
+                        $(ui.draggable).attr("src", '' + imagen2 + '')
+                        movimientos++;
+                        $('#movimientos-text').text(movimientos);
+                        setTimeout(drag, 1000)
                     }
                 });;
             } if (columna == 7) {
-                var izquierda = $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').attr('id');
+                var izquierda = $('.col-' + (columna - 1) + ' .elemento:eq(' + fila + ')').attr('id');
                 $("#" + izquierda).droppable({
                     accept: ".elemento",
                     drop: function (event, ui) {
                         var imagen2 = $(this).attr("src");
                         var imagen1 = $(ui.draggable).attr("src");
-                        console.log(imagen1);
-                        console.log(imagen2);
+                        $(this).attr("src", '' + imagen1 + '');
+                        $(ui.draggable).attr("src", '' + imagen2 + '')
+                        movimientos++;
+                        $('#movimientos-text').text(movimientos);
+                        setTimeout(drag, 1000)
                     }
                 });;
             }
         },
-        containment: $('.panel-tablero'), cursor: "crosshair", revert: true
+        containment: $('.panel-tablero'), cursor: "crosshair", revert: true,
+        stop: function (event, ui) {
+            derecha();
+            abajo();
+            titilar();
+        }
     });
+}
+function drag() {
+    if (titilar == false) {
+        $('.elemento').draggable('destroy')
+    }
 }
 //-------------------------------------------------
 var clicks = 0
+var movimientos = 0
 //Función de Animacion del Titulo Principal
 function tituloblanco() {
     $('.main-titulo').animate({
@@ -117,12 +147,12 @@ function tituloamarillo() {
 //Función para el tablero inicial 
 var id = 1;
 function tableroInicio() {
-    var cantidad = 7
-    id = 1
+    var cantidad = 7;
+    id = 1;
     for (var j = 1; j <= cantidad; j++) {
         for (var i = 0; i < cantidad; i++) {
-            var aleatorio = Math.round(Math.random() * (4 - 1) + parseInt(1))
-            var pick = "image/" + aleatorio.toString() + ".png"
+            var aleatorio = Math.round(Math.random() * (4 - 1) + parseInt(1));
+            var pick = "image/" + aleatorio.toString() + ".png";
             if ($('.col-' + j + ' img').length < 7) {
                 $('.col-' + j).append('<img src="' + pick + '" class="elemento" id="' + id + '">');
             } id++;
@@ -140,9 +170,9 @@ function derecha() {
             if ((j + 2) <= 7 && (objeto[i].src == $('.col-' + (j + 1) + ' .elemento')[i].src) && ((objeto[i].src == $('.col-' + (j + 2) + ' .elemento')[i].src))) {
                 for (var k = 0; k < cantidad; k++) {
                     if ((j + k) <= 7 && objeto[i].src == $('.col-' + (j + k) + ' .elemento')[i].src) {
-                        numero = '#' + $('.col-' + (j + k) + ' .elemento')[i].id
-                        $(numero).addClass('eliminar')
-                    } else break
+                        numero = '#' + $('.col-' + (j + k) + ' .elemento')[i].id;
+                        $(numero).addClass('eliminar');
+                    } else break;
                 }
             }
         }
@@ -159,8 +189,8 @@ function abajo() {
                 for (var k = 0; k < cantidad; k++) {
                     if ((i + k) < 7 && objeto[i].src == objeto[i + k].src) {
                         numero = '#' + objeto[i + k].id;
-                        $(numero).addClass('eliminar')
-                    } else break
+                        $(numero).addClass('eliminar');
+                    } else break;
                 }
             }
         }
@@ -169,7 +199,7 @@ function abajo() {
 //-------------------------------------------------------------------------------------
 //Funcion para eliminar Dulces iguales
 function titilar() {
-    if ($('.eliminar').length != 0) {
+    if ($('.eliminar').length != 0 && over == false) {
         $('.eliminar').animate({ opacity: 0 }, 200)
             .animate({ opacity: 1 }, 200)
             .animate({ opacity: 0 }, 200)
@@ -182,30 +212,29 @@ function titilar() {
             .animate({ opacity: 1 }, 200)
             .animate({ opacity: 0 }, 250,
                 function () {
-                    puntaje()
-                    $('.eliminar').remove()
-                    setTimeout(rellenar, 250)
-                    setTimeout(abajo, 300)
-                    setTimeout(derecha, 300)
+                    puntaje();
+                    $('.eliminar').remove();
+                    setTimeout(rellenar, 250);
+                    setTimeout(abajo, 300);
+                    setTimeout(derecha, 300);
                 }
             )
-
-        setTimeout(titilar, 2900)
-    } else arrastrar(); return false
+        setTimeout(titilar, 2900);
+    } else arrastrar(); return false;
 }
 //-----------------------------------------------------------------------------------
 //Funcion para añadir despues de eliminar iguales
 function rellenar() {
-    var cantidad = 7
-    var fill = 0
+    var cantidad = 7;
+    var fill = 0;
     for (i = 1; i <= cantidad; i++) {
         if ($('.col-' + i + ' img').length < 7) {
-            fill = cantidad - $('.col-' + i + ' img').length
+            fill = cantidad - $('.col-' + i + ' img').length;
             for (j = 0; j < fill; j++) {
-                var aleatorio = Math.round(Math.random() * (4 - 1) + parseInt(1))
-                var pick = "image/" + aleatorio.toString() + ".png"
+                var aleatorio = Math.round(Math.random() * (4 - 1) + parseInt(1));
+                var pick = "image/" + aleatorio.toString() + ".png";
                 $('.col-' + i).prepend('<img src="' + pick + '" class="elemento" id="' + id + '">');
-                id++
+                id++;
             }
         }
     }
@@ -214,36 +243,36 @@ function rellenar() {
 //Funcion para calcular puntaje
 var puntos = 0;
 function puntaje() {
-    puntos = puntos + ($('.eliminar').length * 15)
-    $('#score-text').text(puntos)
+    puntos = puntos + ($('.eliminar').length * 15);
+    $('#score-text').text(puntos);
 }
 //----------------------------------------------------------------------------------
 //función para drag and drop
 
 //---------------------------------------------------------------------------------
 //Función para cuando se cumpla el tiempo
-var over = false
+var over = false;
 function gameOver() {
     $('.panel-tablero').animate({
         height: "toggle",
         width: "toggle",
         opacity: 0.2
-    }, 895, "linear")
+    }, 895, "linear");
     $('.panel-score').animate({
         width: "+=75%",
     }, 1013, function () {
         letrerofin()
-    })
+    });
     $('.time').animate({
         height: "toggle",
         width: "toggle",
         opacity: 0.2
-    }, 895, "linear")
-    over = true
+    }, 895, "linear");
+    over = true;
 }
 
 function letrerofin() {
-    $('.score').before('<h2 class="titulo-over" style="text-align:center">Juego Terminado</h2>')
+    $('.score').before('<h2 class="titulo-over" style="text-align:center">Juego Terminado</h2>');
 }
 //----------------------------------------------------------------------------------------------
 //Función para reiniciar el tablero
@@ -262,8 +291,9 @@ function restart() {
         $('.panel-score').css({ "height": "700px", "width": "25%" })
         over = false
     }
-    $('.titulo-over').remove()
-    $('.elemento').remove()
-    $('#score-text').text(puntos)
+    $('.titulo-over').remove();
+    $('.elemento').remove();
+    $('#score-text').text(puntos);
+    $('#movimientos-text').text(movimientos);
 }
 //-----------------------------------------------------------------------------------
