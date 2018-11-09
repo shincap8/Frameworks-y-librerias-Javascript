@@ -1,6 +1,7 @@
 var interval;
 var terminado;
 function countdown() {
+  terminado = false
   clearInterval(interval);
   interval = setInterval( function() {
       var timer = $('#timer').html();
@@ -17,7 +18,7 @@ function countdown() {
 
       $('#timer').html(minutes + ':' + seconds);
 
-      if (minutes == 0 && seconds == 0) clearInterval(interval), terminado = true;
+      if (minutes == 0 && seconds == 0) clearInterval(interval), terminado = true, gameOver();
   }, 1000);
 }
 function reset() {

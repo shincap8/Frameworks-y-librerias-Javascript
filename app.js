@@ -1,19 +1,60 @@
 $(function () {
     tituloamarillo()
     tableroInicio()
-    
-    $('.btn-reinicio').on("click",function () {
-        click += 1;
-        if (click == 1) {
+
+    $('.btn-reinicio').on("click", function () {
+        clicks += 1;
+        if (clicks == 1) {
             $(this).text("Reiniciar");
+            countdown()
+            abajo()
+            derecha()
+            titilar()
         }
-        if (click == 2) {
+        if (clicks == 2) {
             $(this).text("Iniciar");
-            click = 0
+            clicks = 0
+            reset()
+            puntos = 0
+            restart()
+            tableroInicio()
         }
     })
 })
-var click = 0
+
+//Función para arrastrar los elementos
+function arrastrar() {
+    $('.elemento').draggable({
+        start: function () {
+            var posicion = $(this).position()
+            var x = 
+            $(this).next().addClass('drop')
+            $(this).prev().addClass('drop')
+            var fila = $(this).index()
+            var columna = $(this).parent().attr('class')
+            columna = columna.split("-")[1]
+            columna = parseInt(columna)
+            if (columna == 1) {
+                $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+            } else if (columna > 1 && columna < 7) {
+                $('col-' + (columna + 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+                $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+            } if (columna == 7) {
+                $('col-' + (columna - 1) + ' elemento:eq(' + fila + ')').addClass('drop')
+            }
+        },
+        containment: $('.panel-tablero'), cursor: "crosshair"
+    })
+
+    $('.drop').droppable({
+        accept: ".elemento",
+        drop: function () {
+            
+        }
+    })
+}
+//-------------------------------------------------
+var clicks = 0
 //Función de Animacion del Titulo Principal
 function tituloblanco() {
     $('.main-titulo').animate({
@@ -34,6 +75,7 @@ function tituloamarillo() {
 var id = 1;
 function tableroInicio() {
     var cantidad = 7
+    id = 1
     for (var j = 1; j <= cantidad; j++) {
         for (var i = 0; i < cantidad; i++) {
             var aleatorio = Math.round(Math.random() * (4 - 1) + parseInt(1))
@@ -44,9 +86,6 @@ function tableroInicio() {
         }
     }
 }
-//-------------------------------------------
-//Función para el botón reiniciar
-
 //-------------------------------------------
 //Funciones para comparar columnas y filas
 function derecha() {
@@ -85,29 +124,31 @@ function abajo() {
     }
 }
 //-------------------------------------------------------------------------------------
-//Funciones para eliminar Dulces iguales
+//Funcion para eliminar Dulces iguales
 function titilar() {
-    if ($('.eliminar').length!=0) {
-        $('.eliminar').animate({ opacity: 0 }, 300)
-            .animate({ opacity: 1 }, 300)
-            .animate({ opacity: 0 }, 300)
-            .animate({ opacity: 1 }, 300)
-            .animate({ opacity: 0 }, 300)
-            .animate({ opacity: 1 }, 300)
-            .animate({ opacity: 0 }, 300)
-            .animate({ opacity: 1 }, 300)
-            .animate({ opacity: 0 }, 300)
-            .animate({ opacity: 1 }, 300)
-            .animate({ opacity: 0 }, 350,
+    if ($('.eliminar').length != 0) {
+        $('.eliminar').animate({ opacity: 0 }, 200)
+            .animate({ opacity: 1 }, 200)
+            .animate({ opacity: 0 }, 200)
+            .animate({ opacity: 1 }, 200)
+            .animate({ opacity: 0 }, 200)
+            .animate({ opacity: 1 }, 200)
+            .animate({ opacity: 0 }, 200)
+            .animate({ opacity: 1 }, 200)
+            .animate({ opacity: 0 }, 200)
+            .animate({ opacity: 1 }, 200)
+            .animate({ opacity: 0 }, 250,
                 function () {
                     puntaje()
                     $('.eliminar').remove()
                     setTimeout(rellenar, 250)
+                    setTimeout(abajo, 300)
+                    setTimeout(derecha, 300)
                 }
             )
-        derecha()
-        abajo() 
-    } else return false;
+
+        setTimeout(titilar, 2900)
+    } else arrastrar(); return false
 }
 //-----------------------------------------------------------------------------------
 //Funcion para añadir despues de eliminar iguales
@@ -129,17 +170,22 @@ function rellenar() {
 //-------------------------------------------------------------------------------------
 //Funcion para calcular puntaje
 var puntos = 0;
-function puntaje() { 
+function puntaje() {
     puntos = puntos + ($('.eliminar').length * 15)
     $('#score-text').text(puntos)
 }
+//----------------------------------------------------------------------------------
+//función para drag and drop
+
+//---------------------------------------------------------------------------------
 //Función para cuando se cumpla el tiempo
+var over = false
 function gameOver() {
     $('.panel-tablero').animate({
         height: "toggle",
         width: "toggle",
         opacity: 0.2
-    }, 895,"linear")
+    }, 895, "linear")
     $('.panel-score').animate({
         width: "+=75%",
     }, 1013, function () {
@@ -150,10 +196,31 @@ function gameOver() {
         width: "toggle",
         opacity: 0.2
     }, 895, "linear")
-
-
+    over = true
 }
 
 function letrerofin() {
     $('.score').before('<h2 class="titulo-over" style="text-align:center">Juego Terminado</h2>')
 }
+//----------------------------------------------------------------------------------------------
+//Función para reiniciar el tablero
+function restart() {
+    if (over == true) {
+        $('.panel-tablero').animate({
+            height: "toggle",
+            width: "toggle",
+            opacity: 1
+        }, 50, "linear")
+        $('.time').animate({
+            height: "toggle",
+            width: "toggle",
+            opacity: 1
+        }, 50, "linear")
+        $('.panel-score').css({ "height": "700px", "width": "25%" })
+        over = false
+    }
+    $('.titulo-over').remove()
+    $('.elemento').remove()
+    $('#score-text').text(puntos)
+}
+//-----------------------------------------------------------------------------------
